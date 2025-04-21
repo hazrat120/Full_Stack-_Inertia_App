@@ -1,13 +1,13 @@
 import Pagination from "@/Components/Pagination";
 import SelectInput from "@/Components/SelectInput";
 import TextInput from "@/Components/TextInput";
-import { PROJECT_STATUS_CLASS_MAP, PROJECT_STATUS_TEXT_MAP } from "@/constants";
+import { TASK_STATUS_CLASS_MAP, TASK_STATUS_TEXT_MAP } from "@/constants";
 import AuthenticatedLayout from "@/Layouts/AuthenticatedLayout";
 import { Head, Link, router } from "@inertiajs/react";
 import { PencilSquareIcon, TrashIcon } from "@heroicons/react/24/solid";
 import TableHeading from "@/Components/TableHeading";
 
-export default function Index({ projects, queryParams = null }) {
+export default function Index({ tasks, queryParams = null }) {
     queryParams = queryParams || {};
 
     const searchFieldChanged = (name, value) => {
@@ -17,7 +17,7 @@ export default function Index({ projects, queryParams = null }) {
             delete queryParams[name];
         }
 
-        router.get(route("project.index"), queryParams);
+        router.get(route("task.index"), queryParams);
     };
 
     const onKeyPress = (name, e) => {
@@ -34,18 +34,18 @@ export default function Index({ projects, queryParams = null }) {
             queryParams.sort_direction = "asc";
         }
 
-        router.get(route("project.index"), queryParams);
+        router.get(route("task.index"), queryParams);
     };
 
     return (
         <AuthenticatedLayout
             header={
                 <h2 className="text-xl font-semibold leading-tight text-gray-800 dark:text-gray-200">
-                    Projects
+                    Tasks
                 </h2>
             }
         >
-            <Head title="Projects" />
+            <Head title="Tasks" />
 
             <div className="py-12">
                 <div className="mx-auto max-w-7xl sm:px-6 lg:px-8">
@@ -189,55 +189,55 @@ export default function Index({ projects, queryParams = null }) {
                                         </tr>
                                     </thead>
                                     <tbody>
-                                        {projects.data.map((project) => (
+                                        {tasks.data.map((task) => (
                                             <tr
-                                                key={project.id}
+                                                key={task.id}
                                                 className="bg-white border-b dark:bg-gray-800 dark:border-gray-700 hover:bg-gray-50 dark:hover:bg-gray-600"
                                             >
                                                 <td className="px-3 py-2">
-                                                    {project.id}
+                                                    {task.id}
                                                 </td>
                                                 <td className="px-3 py-2">
                                                     <img
-                                                        src={project.image_path}
+                                                        src={task.image_path}
                                                         alt="not found"
                                                     />
                                                 </td>
                                                 <td className="px-3 py-2">
-                                                    {project.name}
+                                                    {task.name}
                                                 </td>
                                                 <td className="px-3 py-2">
                                                     <span
                                                         className={
                                                             "px-2 py-1 rounded text-white " +
-                                                            PROJECT_STATUS_CLASS_MAP[
-                                                                project.status
+                                                            TASK_STATUS_CLASS_MAP[
+                                                                task.status
                                                             ]
                                                         }
                                                     >
                                                         {
-                                                            PROJECT_STATUS_TEXT_MAP[
-                                                                project.status
+                                                            TASK_STATUS_TEXT_MAP[
+                                                                task.status
                                                             ]
                                                         }
                                                     </span>
                                                 </td>
                                                 <td className="px-3 py-2">
-                                                    {project.created_at}
+                                                    {task.created_at}
                                                 </td>
                                                 <td className="px-3 py-2">
-                                                    {project.due_date}
+                                                    {task.due_date}
                                                 </td>
                                                 <td className="px-3 py-2">
-                                                    {project.createdBy.name}
+                                                    {task.createdBy.name}
                                                 </td>
 
                                                 <td className="px-3 py-2 text-center">
                                                     <div className="flex items-center justify-center gap-2">
                                                         <Link
                                                             href={route(
-                                                                "project.edit",
-                                                                project.id
+                                                                "task.edit",
+                                                                task.id
                                                             )}
                                                             className="inline-flex items-center gap-1 px-3 py-1.5 text-sm font-medium text-white bg-blue-600 rounded-md hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-blue-400 dark:bg-blue-500 dark:hover:bg-blue-600 dark:focus:ring-blue-700 transition"
                                                         >
@@ -247,8 +247,8 @@ export default function Index({ projects, queryParams = null }) {
 
                                                         <Link
                                                             href={route(
-                                                                "project.destroy",
-                                                                project.id
+                                                                "task.destroy",
+                                                                task.id
                                                             )}
                                                             className="inline-flex items-center gap-1 px-3 py-1.5 text-sm font-medium text-white bg-red-600 rounded-md hover:bg-red-700 focus:outline-none focus:ring-2 focus:ring-red-400 dark:bg-red-500 dark:hover:bg-red-600 dark:focus:ring-red-700 transition"
                                                         >
@@ -262,7 +262,7 @@ export default function Index({ projects, queryParams = null }) {
                                     </tbody>
                                 </table>
                             </div>
-                            <Pagination links={projects.meta.links} />
+                            <Pagination links={tasks.meta.links} />
                         </div>
                     </div>
                 </div>
