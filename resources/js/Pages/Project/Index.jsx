@@ -7,7 +7,7 @@ import { Head, Link, router } from "@inertiajs/react";
 import { PencilSquareIcon, TrashIcon } from "@heroicons/react/24/solid";
 import TableHeading from "@/Components/TableHeading";
 
-export default function Index({ projects, queryParams = null }) {
+export default function Index({ projects, queryParams = null, success }) {
     queryParams = queryParams || {};
 
     const searchFieldChanged = (name, value) => {
@@ -37,6 +37,14 @@ export default function Index({ projects, queryParams = null }) {
         router.get(route("project.index"), queryParams);
     };
 
+    const deleteProject = (project) => {
+        if (!window.confirm("Are you sure you want to delete the project?")) {
+            return;
+        }
+
+        router.delete(route("project.destroy", project.id));
+    };
+
     return (
         <AuthenticatedLayout
             header={
@@ -57,6 +65,12 @@ export default function Index({ projects, queryParams = null }) {
 
             <div className="py-12">
                 <div className="mx-auto max-w-7xl sm:px-6 lg:px-8">
+                    {success && (
+                        <div className="bg-emerald-500 py-2 px-4 mb-4 text-white rounded">
+                            {success}
+                        </div>
+                    )}
+
                     <div className="overflow-hidden bg-white shadow-sm sm:rounded-lg dark:bg-gray-800">
                         <div className="p-6 text-gray-900 dark:text-gray-100">
                             <div className="overflow-auto">
@@ -250,7 +264,7 @@ export default function Index({ projects, queryParams = null }) {
                                                 </td>
 
                                                 <td className="px-3 py-2 text-center">
-                                                    <div className="flex items-center justify-center gap-2">
+                                                    <div className="flex items-center justify-center gap-2 text-nowrap">
                                                         <Link
                                                             href={route(
                                                                 "project.edit",
@@ -262,16 +276,17 @@ export default function Index({ projects, queryParams = null }) {
                                                             Edit
                                                         </Link>
 
-                                                        <Link
-                                                            href={route(
-                                                                "project.destroy",
-                                                                project.id
-                                                            )}
+                                                        <button
+                                                            onClick={(e) =>
+                                                                deleteProject(
+                                                                    project
+                                                                )
+                                                            }
                                                             className="inline-flex items-center gap-1 px-3 py-1.5 text-sm font-medium text-white bg-red-600 rounded-md hover:bg-red-700 focus:outline-none focus:ring-2 focus:ring-red-400 dark:bg-red-500 dark:hover:bg-red-600 dark:focus:ring-red-700 transition"
                                                         >
                                                             <TrashIcon className="w-4 h-4" />
                                                             Delete
-                                                        </Link>
+                                                        </button>
                                                     </div>
                                                 </td>
                                             </tr>

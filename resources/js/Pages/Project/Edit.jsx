@@ -6,18 +6,18 @@ import TextInput from "@/Components/TextInput";
 import AuthenticatedLayout from "@/Layouts/AuthenticatedLayout";
 import { Head, Link, useForm } from "@inertiajs/react";
 
-export default function Create() {
-    const { data, setData, post, errors, reset } = useForm({
+export default function Edit({ project }) {
+    const { data, setData, put, errors, reset } = useForm({
         image: "",
-        name: "",
-        status: "",
-        description: "",
-        due_date: "",
+        name: project.name || "",
+        status: project.status || "",
+        description: project.description || "",
+        due_date: project.due_date || "",
     });
 
     const onSubmit = (e) => {
         e.preventDefault();
-        post(route("project.store"));
+        put(route("project.update", project.id));
     };
 
     return (
@@ -25,7 +25,7 @@ export default function Create() {
             header={
                 <div className="flex justify-between items-center">
                     <h2 className="text-xl font-semibold leading-tight text-gray-800 dark:text-gray-200">
-                        Create new Project
+                        Edit project {project.name}
                     </h2>
                 </div>
             }
@@ -39,6 +39,14 @@ export default function Create() {
                             onSubmit={onSubmit}
                             className="p-4 text-gray-900 dark:bg-gray-800 shadow sm:rounded-lg"
                         >
+                            {project.image_path && (
+                                <div className="mb-4">
+                                    <img
+                                        src={project.image_path}
+                                        className="w-64 "
+                                    />
+                                </div>
+                            )}
                             <div>
                                 <InputLabel
                                     htmlFor="project_image_path"
@@ -154,7 +162,7 @@ export default function Create() {
                                 </SelectInput>
 
                                 <InputError
-                                    message={errors.status}
+                                    message={errors.project_status}
                                     className="mt-2"
                                 />
                             </div>
