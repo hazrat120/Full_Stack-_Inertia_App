@@ -6,56 +6,47 @@ import TextInput from "@/Components/TextInput";
 import AuthenticatedLayout from "@/Layouts/AuthenticatedLayout";
 import { Head, Link, useForm } from "@inertiajs/react";
 
-export default function Create({ project }) {
+export default function Create() {
     const { data, setData, post, errors, reset } = useForm({
         image: "",
-        name: project.name || "",
-        status: project.status || "",
-        description: project.description || "",
-        due_date: project.due_date || "",
-        _method: "PUT",
+        name: "",
+        status: "",
+        description: "",
+        due_date: "",
     });
 
     const onSubmit = (e) => {
         e.preventDefault();
-
-        post(route("project.update", project.id));
+        post(route("user.store"));
     };
 
     return (
         <AuthenticatedLayout
             header={
                 <div className="flex justify-between items-center">
-                    <h2 className="font-semibold text-xl text-gray-800 dark:text-gray-200 leading-tight">
-                        Edit project "{project.name}"
+                    <h2 className="text-xl font-semibold leading-tight text-gray-800 dark:text-gray-200">
+                        Create new User
                     </h2>
                 </div>
             }
         >
-            <Head title="Projects" />
+            <Head title="Create User" />
 
             <div className="py-12">
-                <div className="max-w-7xl mx-auto sm:px-6 lg:px-8">
-                    <div className="bg-white dark:bg-gray-800 overflow-hidden shadow-sm sm:rounded-lg">
+                <div className="mx-auto max-w-7xl sm:px-6 lg:px-8">
+                    <div className="overflow-hidden bg-white shadow-sm sm:rounded-lg dark:bg-gray-800">
                         <form
                             onSubmit={onSubmit}
-                            className="p-4 sm:p-8 bg-white dark:bg-gray-800 shadow sm:rounded-lg"
+                            className="p-4 text-gray-900 dark:bg-gray-800 shadow sm:rounded-lg"
                         >
-                            {project.image_path && (
-                                <div className="mb-4">
-                                    <img
-                                        src={project.image_path}
-                                        className="w-64"
-                                    />
-                                </div>
-                            )}
                             <div>
                                 <InputLabel
-                                    htmlFor="project_image_path"
-                                    value="Project Image"
+                                    htmlFor="user_image_path"
+                                    value="User Image"
                                 />
+
                                 <TextInput
-                                    id="project_image_path"
+                                    id="user_image_path"
                                     type="file"
                                     name="image"
                                     className="mt-1 block w-full"
@@ -63,19 +54,21 @@ export default function Create({ project }) {
                                         setData("image", e.target.files[0])
                                     }
                                 />
+
                                 <InputError
                                     message={errors.image}
                                     className="mt-2"
                                 />
                             </div>
+
                             <div className="mt-4">
                                 <InputLabel
-                                    htmlFor="project_name"
-                                    value="Project Name"
+                                    htmlFor="user_name"
+                                    value="User Name"
                                 />
 
                                 <TextInput
-                                    id="project_name"
+                                    id="user_name"
                                     type="text"
                                     name="name"
                                     value={data.name}
@@ -91,14 +84,15 @@ export default function Create({ project }) {
                                     className="mt-2"
                                 />
                             </div>
+
                             <div className="mt-4">
                                 <InputLabel
-                                    htmlFor="project_description"
-                                    value="Project Description"
+                                    htmlFor="user_description"
+                                    value="User Description"
                                 />
 
                                 <TextAreaInput
-                                    id="project_description"
+                                    id="user_description"
                                     name="description"
                                     value={data.description}
                                     className="mt-1 block w-full"
@@ -112,16 +106,17 @@ export default function Create({ project }) {
                                     className="mt-2"
                                 />
                             </div>
+
                             <div className="mt-4">
                                 <InputLabel
-                                    htmlFor="project_due_date"
-                                    value="Project Deadline"
+                                    htmlFor="user_due_date"
+                                    value="User Deadline"
                                 />
 
                                 <TextInput
-                                    id="project_due_date"
+                                    id="user_due_date"
                                     type="date"
-                                    name="due_date"
+                                    name="user_due_date"
                                     value={data.due_date}
                                     className="mt-1 block w-full"
                                     onChange={(e) =>
@@ -134,15 +129,17 @@ export default function Create({ project }) {
                                     className="mt-2"
                                 />
                             </div>
+
                             <div className="mt-4">
                                 <InputLabel
-                                    htmlFor="project_status"
-                                    value="Project Status"
+                                    htmlFor="user_status"
+                                    value="User Status"
                                 />
 
                                 <SelectInput
+                                    id="user_status"
                                     name="status"
-                                    id="project_status"
+                                    value={data.status}
                                     className="mt-1 block w-full"
                                     onChange={(e) =>
                                         setData("status", e.target.value)
@@ -157,18 +154,20 @@ export default function Create({ project }) {
                                 </SelectInput>
 
                                 <InputError
-                                    message={errors.project_status}
+                                    message={errors.status}
                                     className="mt-2"
                                 />
                             </div>
+
                             <div className="mt-4 text-right">
                                 <Link
-                                    href={route("project.index")}
+                                    href={route("user.index")}
                                     className="bg-gray-100 py-1 px-3 text-gray-800 rounded shadow transition-all hover:bg-gray-200 mr-2"
                                 >
                                     Cancel
                                 </Link>
-                                <button className="bg-emerald-500 py-1 px-3 text-white rounded shadow transition-all hover:bg-emerald-600">
+
+                                <button className="bg-emerald-500 py-1 px-3 text-white rounded shadow transition-all hover:bg-erm">
                                     Submit
                                 </button>
                             </div>
