@@ -11,7 +11,7 @@ class UpdateTaskRequest extends FormRequest
      */
     public function authorize(): bool
     {
-        return false;
+        return true;
     }
 
     /**
@@ -22,7 +22,25 @@ class UpdateTaskRequest extends FormRequest
     public function rules(): array
     {
         return [
-            //
+            'name' => 'required|string|max:255',
+            'description' => 'nullable|string',
+            'image' => 'nullable|image|max:2048', // 2MB limit
+            'status' => 'required|string|in:pending,in_progress,completed',
+            'priority' => 'required|string|in:low,medium,high,urgent',
+            'due_date' => 'nullable|date',
+            'assigned_user_id' => 'required|exists:users,id',
+            'project_id' => 'required|exists:projects,id',
+        ];
+    }
+
+    public function messages(): array
+    {
+        return [
+            'name.required' => 'Task name is required.',
+            'status.in' => 'Status must be one of: pending, in_progress, completed.',
+            'priority.in' => 'Priority must be one of: low, medium, high, urgent.',
+            'image.image' => 'The uploaded file must be an image.',
+            'due_date.date' => 'Please enter a valid date for due date.',
         ];
     }
 }
