@@ -8,6 +8,7 @@ import { Link, router } from "@inertiajs/react";
 
 export default function TaskTable({
     tasks,
+    success,
     queryParams = null,
     hideProjectColumn = false,
 }) {
@@ -40,8 +41,21 @@ export default function TaskTable({
         router.get(route("task.index"), queryParams);
     };
 
+    const deleteTask = (task) => {
+        if (!window.confirm("Are you sure you want to delete the task?")) {
+            return;
+        }
+        router.delete(route("task.destroy", task.id));
+    };
+
     return (
         <>
+            {success && (
+                <div className="bg-emerald-500 py-2 px-4 mb-4 text-white rounded">
+                    {success}
+                </div>
+            )}
+
             <div className="overflow-auto">
                 <table className="w-full text-sm text-left rtl:text-right text-gray-500 dark:text-gray-400">
                     <thead className="text-xs text-gray-700  uppdercase bg-gray-50 dark:bg-gray-700 dark:text-gray-400 border-b-2 border-gray-500">
@@ -167,7 +181,11 @@ export default function TaskTable({
                                         {task.project.name}
                                     </td>
                                 )}
-                                <td className="px-3 py-2">{task.name}</td>
+                                <th className="px-3 py-2  text-gray-400 hover:underline">
+                                    <Link href={route("task.show", task.id)}>
+                                        {task.name}
+                                    </Link>
+                                </th>
                                 <td className="px-3 py-2">
                                     <span
                                         className={
@@ -184,7 +202,7 @@ export default function TaskTable({
                                     {task.createdBy.name}
                                 </td>
 
-                                <td className="px-3 py-2 text-center">
+                                <td className="px-3 py-2 text-center text-nowrap">
                                     <div className="flex items-center justify-center gap-2">
                                         <Link
                                             href={route("task.edit", task.id)}
@@ -194,16 +212,13 @@ export default function TaskTable({
                                             Edit
                                         </Link>
 
-                                        <Link
-                                            href={route(
-                                                "task.destroy",
-                                                task.id
-                                            )}
+                                        <button
+                                            onClick={(e) => deleteTask(task)}
                                             className="inline-flex items-center gap-1 px-3 py-1.5 text-sm font-medium text-white bg-red-600 rounded-md hover:bg-red-700 focus:outline-none focus:ring-2 focus:ring-red-400 dark:bg-red-500 dark:hover:bg-red-600 dark:focus:ring-red-700 transition"
                                         >
                                             <TrashIcon className="w-4 h-4" />
                                             Delete
-                                        </Link>
+                                        </button>
                                     </div>
                                 </td>
                             </tr>
