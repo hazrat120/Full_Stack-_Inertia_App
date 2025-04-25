@@ -1,7 +1,10 @@
-import { USER_STATUS_CLASS_MAP, USER_STATUS_TEXT_MAP } from "@/constants";
 import AuthenticatedLayout from "@/Layouts/AuthenticatedLayout";
 import { Head } from "@inertiajs/react";
 import TaskTable from "../Task/TaskTable";
+import {
+    TASK_STATUS_CLASS_MAP,
+    TASK_STATUS_TEXT_MAP,
+} from "@/constants";
 
 export default function Show({ user, tasks, queryParams = null }) {
     return (
@@ -49,13 +52,13 @@ export default function Show({ user, tasks, queryParams = null }) {
                                             <span
                                                 className={
                                                     "px-2 py-1 rounded text-white " +
-                                                    USER_STATUS_CLASS_MAP[
+                                                    TASK_STATUS_CLASS_MAP[
                                                         user.status
                                                     ]
                                                 }
                                             >
                                                 {
-                                                    USER_STATUS_TEXT_MAP[
+                                                    TASK_STATUS_TEXT_MAP[
                                                         user.status
                                                     ]
                                                 }
